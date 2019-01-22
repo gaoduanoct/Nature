@@ -2,7 +2,7 @@ object Form1: TForm1
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = #31034#20363#20195#30721'0-1 '#20256#32479#30340#38543#26426#28216#36208
+  Caption = '_1_1_randomWalkTraditional'
   ClientHeight = 466
   ClientWidth = 794
   Color = clBtnFace
