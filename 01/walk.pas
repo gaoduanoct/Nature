@@ -8,8 +8,8 @@ uses
 type
   Twalker = class
   private
-    x, y: Double;
   public
+    x, y: Double;
     constructor Create(width, height: Double);
     procedure display();
     procedure step();
@@ -33,8 +33,6 @@ end;
 
 constructor Twalker.Create(width, height: double);
 begin
-//  x := width / 2;
-//  y := height / 2;
   x := 0;
   y := 0;
 end;

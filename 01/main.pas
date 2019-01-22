@@ -28,6 +28,8 @@ type
 var
   Form1: TForm1;
   aWalker: Twalker;
+  Npoints: Integer;
+  pointsList: TStringlist;
 
 implementation
 
@@ -87,6 +89,7 @@ end;
 procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   aWalker.Free;
+  pointsList.Free;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -104,11 +107,16 @@ end;
 procedure TForm1.FormShow(Sender: TObject);
 begin
   aWalker := Twalker.Create(1, 1);
+  pointsList := TStringList.Create;
 end;
 
 procedure TForm1.tmr1Timer(Sender: TObject);
 begin
   aWalker.step;
+  inc(Npoints, 1);
+  if Npoints = High(integer) then
+    tmr1.Enabled := false;
+  pointsList.Add(floatToStr(aWalker.x) + ',' + floatToStr(aWalker.y));
   aWalker.display;
 end;
 
