@@ -1,7 +1,7 @@
 {
-https://blog.csdn.net/QDseashore/article/details/7731240
-https://blog.csdn.net/u010579736/article/details/51880840
-http://edn.embarcadero.com/article/26401
+  https://blog.csdn.net/QDseashore/article/details/7731240
+  https://blog.csdn.net/u010579736/article/details/51880840
+  http://edn.embarcadero.com/article/26401
 
 }
 
@@ -29,7 +29,6 @@ var
   Form1: TForm1;
   aWalker: Twalker;
   Npoints: Integer;
-  pointsList: TStringlist;
 
 implementation
 
@@ -38,50 +37,53 @@ implementation
 procedure setupPixelFormat(DC: HDC);
 const
   pfd: TPIXELFORMATDESCRIPTOR = (
-    nSize: sizeof(TPIXELFORMATDESCRIPTOR);	// size
-    nVersion: 1;			// version
-    dwFlags: PFD_SUPPORT_OPENGL or PFD_DRAW_TO_WINDOW or PFD_DOUBLEBUFFER;	// support double-buffering
-    iPixelType: PFD_TYPE_RGBA;	// color type
-    cColorBits: 24;			// preferred color depth
+    nSize: sizeof(TPIXELFORMATDESCRIPTOR); // size
+    nVersion: 1; // version
+    dwFlags: PFD_SUPPORT_OPENGL or PFD_DRAW_TO_WINDOW or PFD_DOUBLEBUFFER;
+    // support double-buffering
+    iPixelType: PFD_TYPE_RGBA; // color type
+    cColorBits: 24; // preferred color depth
     cRedBits: 0;
-    cRedShift: 0;	// color bits (ignored)
+    cRedShift: 0; // color bits (ignored)
     cGreenBits: 0;
     cGreenShift: 0;
     cBlueBits: 0;
     cBlueShift: 0;
     cAlphaBits: 0;
-    cAlphaShift: 0;   // no alpha buffer
+    cAlphaShift: 0; // no alpha buffer
     cAccumBits: 0;
-    cAccumRedBits: 0;  		// no accumulation buffer,
-    cAccumGreenBits: 0;     	// accum bits (ignored)
+    cAccumRedBits: 0; // no accumulation buffer,
+    cAccumGreenBits: 0; // accum bits (ignored)
     cAccumBlueBits: 0;
     cAccumAlphaBits: 0;
-    cDepthBits: 16;			// depth buffer
-    cStencilBits: 0;			// no stencil buffer
-    cAuxBuffers: 0;			// no auxiliary buffers
-    iLayerType: PFD_MAIN_PLANE;  	// main layer
+    cDepthBits: 16; // depth buffer
+    cStencilBits: 0; // no stencil buffer
+    cAuxBuffers: 0; // no auxiliary buffers
+    iLayerType: PFD_MAIN_PLANE; // main layer
     bReserved: 0;
     dwLayerMask: 0;
     dwVisibleMask: 0;
-    dwDamageMask: 0;    // no layer, visible, damage masks
+    dwDamageMask: 0;
+    // no layer, visible, damage masks
   );
 var
-  pixelFormat: integer;
+  pixelFormat: Integer;
 begin
   pixelFormat := ChoosePixelFormat(DC, @pfd);
   if (pixelFormat = 0) then
     exit;
   if (SetPixelFormat(DC, pixelFormat, @pfd) <> TRUE) then
     exit;
+
 end;
 
 procedure GLInit;
 begin
-   // set viewing projection
+  // set viewing projection
   glMatrixMode(GL_PROJECTION);
-  //glFrustum(-0.1, 0.1, -0.1, 0.1, 0.3, 25.0);
+  // glFrustum(-0.1, 0.1, -0.1, 0.1, 0.3, 25.0);
   glOrtho(-1, 1, -1, 1, 0, 0);
-   // position viewer
+  // position viewer
   glMatrixMode(GL_MODELVIEW);
   glEnable(GL_DEPTH_TEST);
 end;
@@ -97,26 +99,29 @@ var
   DC: HDC;
   RC: HGLRC;
 begin
-  DC := GetDC(Self.Handle);   //Actually, you can use any windowed control here
-  SetupPixelFormat(DC);
-  RC := wglCreateContext(DC); //makes OpenGL window out of DC
-  wglMakeCurrent(DC, RC);     //makes OpenGL window active
-  GLInit;                     //initialize OpenGL
+  DC := GetDC(Self.Handle); // Actually, you can use any windowed control here
+  setupPixelFormat(DC);
+  RC := wglCreateContext(DC); // makes OpenGL window out of DC
+  wglMakeCurrent(DC, RC); // makes OpenGL window active
+  GLInit; // initialize OpenGL
 end;
 
 procedure TForm1.FormShow(Sender: TObject);
 begin
   aWalker := Twalker.Create(1, 1);
-  pointsList := TStringList.Create;
+  pointsList := TStringlist.Create;
+  pointsList.Sorted := true;
+  pointsList.Duplicates := dupIgnore;
 end;
 
 procedure TForm1.tmr1Timer(Sender: TObject);
 begin
   aWalker.step;
-  inc(Npoints, 1);
-  if Npoints = High(integer) then
+  Npoints := pointsList.Count;
+  if Npoints = High(Integer) then
     tmr1.Enabled := false;
-  pointsList.Add(floatToStr(aWalker.x) + ',' + floatToStr(aWalker.y));
+  pointsList.Add(floatToStr(aWalker.x) + '|' + floatToStr(aWalker.y));
+  Caption := IntToStr(pointsList.Count);
   aWalker.display;
 end;
 

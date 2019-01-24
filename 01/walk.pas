@@ -3,7 +3,7 @@ unit walk;
 interface
 
 uses
-  OpenGL, Winapi.Windows;
+  OpenGL, Winapi.Windows, System.Classes, System.SysUtils, Vcl.Dialogs;
 
 type
   Twalker = class
@@ -15,26 +15,36 @@ type
     procedure step();
   end;
 
+var
+  pointsList: TStringlist;
+
 implementation
 
 { Twalker }
 
-procedure point(x, y: double);
+procedure point(x, y: Double);
+var
+  n: integer;
 begin
   glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT);
   glLoadIdentity;
   glTranslatef(0.0, 0.0, 0.0);
-  glPointSize(2);
+  glPointSize(0);
   glBegin(GL_POINTS);
-  glVertex2f(x, y);  //draw a point
+  for n := 0 to pointsList.Count - 1 do
+  begin
+    x := strTofloat(copy(pointsList[n], 1, pos('|', pointsList[n]) - 1));
+    y := strTofloat(copy(pointsList[n], pos('|', pointsList[n]) + 1, length(pointsList[n]) - pos('|', pointsList[n])));
+    glVertex2f(x, y); // draw a point
+  end;
   glEnd;
   SwapBuffers(wglGetCurrentDC);
 end;
 
-constructor Twalker.Create(width, height: double);
+constructor Twalker.Create(width, height: Double);
 begin
-  x := 0;
-  y := 0;
+  x := 0.00001;
+  y := 0.00001;
 end;
 
 procedure Twalker.display();
@@ -47,9 +57,9 @@ var
   p: integer;
   d: Double;
 begin
-  d := 0.01;
+  d := 0.003;
   Randomize;
-  p := Random(4);
+  p := Random(5);
   if p = 0 then
     x := x + d;
   if p = 1 then
@@ -58,7 +68,9 @@ begin
     y := y + d;
   if p = 3 then
     y := y - d;
-  exit;
+  if p = 4 then
+    ;
+
   if x > 1 then
     x := x - d;
   if x < -1 then
