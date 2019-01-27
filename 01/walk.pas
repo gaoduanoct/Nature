@@ -57,20 +57,48 @@ var
   p: integer;
   d: Double;
 begin
-  d := 0.003;
+  d := 0.01;
   Randomize;
-  p := Random(5);
+  p := Random(9);
+  //right
   if p = 0 then
     x := x + d;
+  //left
   if p = 1 then
     x := x - d;
+  //up
   if p = 2 then
     y := y + d;
+  //down
   if p = 3 then
     y := y - d;
+  //right up    1
   if p = 4 then
+  begin
+    x := x + 1.41421 * d;
+    y := y + 1.41421 * d;
+  end;
+  //left up    2
+  if p = 5 then
+  begin
+    x := x - 1.41421 * d;
+    y := y + 1.41421 * d;
+  end;
+  //left down   3
+  if p = 6 then
+  begin
+    x := x - 1.41421 * d;
+    y := y - 1.41421 * d;
+  end;
+  //right down   4
+  if p = 7 then
+  begin
+    x := x + 1.41421 * d;
+    y := y - 1.41421 * d;
+  end;
+  if p = 8 then
     ;
-
+  exit;
   if x > 1 then
     x := x - d;
   if x < -1 then

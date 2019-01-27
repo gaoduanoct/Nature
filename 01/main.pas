@@ -118,7 +118,7 @@ procedure TForm1.tmr1Timer(Sender: TObject);
 begin
   aWalker.step;
   Npoints := pointsList.Count;
-  if Npoints = High(Integer) then
+  if Npoints = High(Integer) - 1 then
     tmr1.Enabled := false;
   pointsList.Add(floatToStr(aWalker.x) + '|' + floatToStr(aWalker.y));
   Caption := IntToStr(pointsList.Count);
